@@ -1,0 +1,33 @@
+#file-zone {
+  background-color: #f1f0f0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
+}
+
+#file {
+  width: 600px;
+  flex-grow: 1;
+  background-color: #fff;
+  border: 1px solid #e4dede;
+  position: relative;
+}
+
+textarea {
+  height: 200px;
+  width: 100%;
+  font-size: 14px;
+  letter-spacing: 1px;
+  font-family: "Arial";
+  color: rgba(255, 0, 0, 0);
+}
+
+.textEditor {
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 18px;
+  white-space: pre-wrap;
+  max-width: 600px;
+}
