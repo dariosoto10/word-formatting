@@ -1,3 +1,3 @@
-const url = 'https://api.datamuse.com/words?rel_syn='
-
-export default url
+export default {
+    URL: 'https://api.datamuse.com/words?rel_syn='
+}

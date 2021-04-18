@@ -1,55 +1,44 @@
-import FileZone from './file-zone/FileZone'
+// @vendors
 import React, { useState, useEffect } from 'react'
-import ControlPanel from './control-panel/ControlPanel'
-import ModalSyn from './modal-syn/ModalSyn'
-import TextService from './text.service'
-import url from './config'
+
+// @components
+import FileZone from './FileZone'
+import ModalSyn from './ModalSyn/'
+import ControlPanel from './ControlPanel'
+
+// @services
+import TextService from './services/textService'
+
+// @constants
+import CONSTANTS from './constants'
+
+
+// @styles
 import './App.css'
 
-const App = () => {
+export default function App() {
   const [defaultText, handleDefaultText] = useState('')
   const [currentWord, handleCurrentWord] = useState('')
   const [modalSyn, handleModalSyn] = useState(false)
-  const [synFetch, handleSynFetch] = useState([])
 
-  const toggle = () => {
-    handleModalSyn(!modalSyn)
-  }
-
-  const onBold = () => {
-    document.execCommand('bold')
-  }
-
-  const onItalic = () => {
-    document.execCommand('italic')
-  }
-
-  const onUnderline = () => {
-    document.execCommand('underline')
-  }
+  const toggle = () => handleModalSyn(!modalSyn)
+  const onCommandText = command => document.execCommand(command)
 
   const onSynonymous = async () => {
     const mySelection = window.getSelection()
-    let splitterSelection = mySelection.toString().replace('\n', ' ')
-    splitterSelection = splitterSelection.split(' ')
+    const splitterSelection = mySelection.toString().replace('\n', ' ').split(' ').filter(selection => selection)
 
-    if (splitterSelection.length === 1) {
+    if (splitterSelection.length) {
       handleCurrentWord(splitterSelection[0])
-      const response = await window.fetch(`${url}${splitterSelection[0]}`)
-      const data = await response.json()
-      if (data) {
-        handleSynFetch(data)
-        toggle()
-      }
+      toggle()
     }
   }
 
-  const replaceWordBySyn = word =>
-    document.execCommand('insertText', false, word)
+  const replaceWordBySyn = word => document.execCommand(CONSTANTS.INSERT_TEXT, false, word)
 
   const handleKeyDown = e => {
     if (e.key === 'Tab') {
-      document.execCommand('insertHTML', false, '&#009')
+      document.execCommand(CONSTANTS.INSERT_HTML, false, '&#009')
       e.preventDefault()
     }
   }
@@ -65,49 +54,22 @@ const App = () => {
       </header>
       <main>
         <ControlPanel
-          onBold={onBold}
-          onItalic={onItalic}
-          onUnderline={onUnderline}
           onSynonymous={onSynonymous}
+          onCommandText={onCommandText}
         />
         <FileZone
           text={defaultText}
           handleText={handleDefaultText}
           handleKeyDown={handleKeyDown}
         />
-        {modalSyn && (
-          <ModalSyn>
-            <h1>Select a synonymous</h1>
-            {synFetch.length === 0 ? (
-              <div>There are no synonymous to fetch</div>
-            ) : (
-              <div>
-                <h1>Your word to replace: {currentWord}</h1>
-                <div className='words-container'>
-                  {synFetch.map(({ word }) => (
-                    <button
-                      className='word'
-                      onClick={() => {
-                        replaceWordBySyn(word)
-                        toggle()
-                      }}
-                      key={word}
-                    >
-                      {word}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <button className='close' onClick={toggle}>
-              CLOSE
-            </button>
-          </ModalSyn>
-        )}
+        <ModalSyn
+          isOpen={modalSyn}
+          handleClose={toggle}
+          currentWord={currentWord}
+          replaceWordBySyn={replaceWordBySyn}
+        />
+        
       </main>
     </div>
   )
 }
-
-export default App
