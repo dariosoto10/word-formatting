@@ -1,69 +1,20 @@
 // @vendors
-import React, { useState, useEffect, useCallback } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 // @components
 import Loader from '../Loader'
 
-// @config
-import CONFIG from '../../config'
+// @hooks
+import useModalSynonymous from './hook'
 
 // @stylesdariosoto
 import './ModalSyn.css'
 
-// @initial state
-const initialState = {
-  errors: '',
-  loading: false,
-  synonymous: []
-}
-
 export function ModalSyn ({ isOpen, handleClose, currentWord, replaceWordBySyn }) {
-  const [synonymousState, setSynonymousState] = useState(initialState)
-
-  const fetchSynonymous = useCallback(async () => {
-    setSynonymousState({
-      ...synonymousState,
-      loading: true
-    })
-  
-    try {
-      const response = await window.fetch(`${CONFIG.URL}${currentWord}`)
-      const data = await response.json()
-
-      if (data.length) {
-        setSynonymousState({
-          ...initialState,
-          loading: false,
-          synonymous: data
-        })
-      } else {
-        setSynonymousState({
-          ...initialState,
-          loading: false,
-          errors: `Could not fetch synonymous with the text: ${currentWord}`
-        })
-      }
-      
-    } catch (error) {
-      setSynonymousState({
-        ...initialState,
-        errors: `Could not fetch synonymous with the text: ${currentWord}`
-      })
-    }
-  })
-
-  useEffect(() => {
-    if (isOpen) {
-      fetchSynonymous()
-    } else {
-      setSynonymousState(initialState)
-    }
-  }, [isOpen, currentWord])
+  const { errors, loading, synonymous } = useModalSynonymous(isOpen, currentWord)
 
   if (!isOpen) return null
-
-  const { errors, loading, synonymous } = synonymousState
 
   return (
     <div className='modal-container'>
