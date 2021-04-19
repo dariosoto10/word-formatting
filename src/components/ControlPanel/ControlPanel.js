@@ -1,11 +1,12 @@
 // @vendors
 import React from 'react'
+import PropTypes from 'prop-types'
 
 // @components
-import Button from '../components/Button'
+import Button from '../Button'
 
 // @constants
-import COMMANDS from '../constants'
+import COMMANDS from '../../constants'
 
 // @styles
 import './ControlPanel.css'
@@ -29,4 +30,9 @@ export function ControlPanel ({ onCommandText, onSynonymous }) {
       </div>
     </div>
   )
+}
+
+ControlPanel.propTypes = {
+  onSynonymous: PropTypes.func.isRequired,
+  onCommandText: PropTypes.func.isRequired
 }

@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from 'react'
 
 // @components
-import FileZone from './FileZone'
-import ModalSyn from './ModalSyn/'
-import ControlPanel from './ControlPanel'
+import FileZone from './components/FileZone'
+import ModalSyn from './components/ModalSyn'
+import ControlPanel from './components/ControlPanel'
 
 // @services
 import TextService from './services/textService'
@@ -59,8 +59,8 @@ export default function App() {
         />
         <FileZone
           text={defaultText}
-          handleText={handleDefaultText}
           handleKeyDown={handleKeyDown}
+          handleText={handleDefaultText}
         />
         <ModalSyn
           isOpen={modalSyn}
@@ -68,7 +68,6 @@ export default function App() {
           currentWord={currentWord}
           replaceWordBySyn={replaceWordBySyn}
         />
-        
       </main>
     </div>
   )

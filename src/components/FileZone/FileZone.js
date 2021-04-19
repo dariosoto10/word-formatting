@@ -1,5 +1,6 @@
 // @vendors
 import React from 'react'
+import PropTypes from 'prop-types'
 
 // @vendors
 import './FileZone.css'
@@ -14,4 +15,9 @@ export function FileZone ({ text, handleKeyDown }) {
       </div>
     </div>
   )
+}
+
+FileZone.propTypes = {
+  text: PropTypes.string.isRequired,
+  handleKeyDown: PropTypes.func.isRequired
 }

@@ -1,11 +1,12 @@
 // @vendors
 import React, { useState, useEffect, useCallback } from 'react'
+import PropTypes from 'prop-types'
 
 // @components
-import Loader from '../components/Loader'
+import Loader from '../Loader'
 
 // @config
-import CONFIG from '../config'
+import CONFIG from '../../config'
 
 // @stylesdariosoto
 import './ModalSyn.css'
@@ -94,4 +95,11 @@ export function ModalSyn ({ isOpen, handleClose, currentWord, replaceWordBySyn }
       </div>
     </div>
   )
+}
+
+ModalSyn.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  currentWord: PropTypes.string.isRequired,
+  replaceWordBySyn: PropTypes.func.isRequired,
 }
